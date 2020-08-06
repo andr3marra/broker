@@ -34,24 +34,22 @@ namespace broker
         }
 
         Object[,] assetsInWallet = new Object[11, 6];                   // Quantity added, 
-        //List<AssetsInStock> assetsInStock = new List<AssetsInStock>();
+        List<AssetsInStock> assetsInStock = new List<AssetsInStock>();
 
         public void broker_Load(object sender, EventArgs e)
         {
             Wallet wallet = new Wallet("andre.marra", 3072.356m);
-            var assetsInStock = new List<AssetsInStock>() {
-                new AssetsInStock(){cod = "B3SA3", name = "B3 SA - Brasil Bolsa Balcao", lastPrice = 63.51m, currency = "BRL", varDay = 0.44f},
-                new AssetsInStock(){cod = "BPAC11", name = "Banco BTG Pactual SA Brazilian Units", lastPrice = 88.20m, currency = "BRL", varDay = 1.15f},
-                new AssetsInStock(){cod = "ITSA4", name = "Itausa Investimentos Itau SA Preference Shares", lastPrice = 10.21m, currency = "BRL", varDay = 0.098f},
-                new AssetsInStock(){cod = "PETR4", name = "Petroleo Brasileiro SA Petrobras Preference Shares", lastPrice = 23.30m, currency = "BRL", varDay = 0.52f},
-                new AssetsInStock(){cod = "EMBR3", name = "Embraer", lastPrice = 7.56m, currency = "BRL", varDay = -1.31f},
-                new AssetsInStock(){cod = "ABEV3", name = "AMBEV", lastPrice = 13.18m, currency = "BRL", varDay = 0.098f},
-                new AssetsInStock(){cod = "CIEL3", name = "Cielo", lastPrice = 5.43m, currency = "BRL", varDay = 7.31f},
-                new AssetsInStock(){cod = "MGLU3", name = "Magazine Luiza", lastPrice = 84.82m, currency = "BRL", varDay = 2.16f},
-                new AssetsInStock(){cod = "AZUL4", name = "Azul", lastPrice = 2.95m, currency = "BRL", varDay = 3.92f},
-                new AssetsInStock(){cod = "GOLL4", name = "Gol", lastPrice = 18.20m, currency = "BRL", varDay = 3.23f},
-                new AssetsInStock(){cod = "ELET3", name = "Eletrobras", lastPrice = 38.51m, currency = "BRL", varDay = 4.93f}
-            };
+
+            assetsInStock.Add(new AssetsInStock() { cod = "B3SA3", name = "B3 SA - Brasil Bolsa Balcao", lastPrice = 63.51m, currency = "BRL", varDay = 0.44f });
+            assetsInStock.Add(new AssetsInStock() { cod = "BPAC11", name = "Banco BTG Pactual SA Brazilian Units", lastPrice = 88.20m, currency = "BRL", varDay = 1.15f });
+            assetsInStock.Add(new AssetsInStock() { cod = "ITSA4", name = "Itausa Investimentos Itau SA Preference Shares", lastPrice = 10.21m, currency = "BRL", varDay = 0.098f });
+            assetsInStock.Add(new AssetsInStock() { cod = "PETR4", name = "Petroleo Brasileiro SA Petrobras Preference Shares", lastPrice = 23.30m, currency = "BRL", varDay = 0.52f });
+            assetsInStock.Add(new AssetsInStock() { cod = "EMBR3", name = "Embraer", lastPrice = 7.56m, currency = "BRL", varDay = -1.31f });
+            assetsInStock.Add(new AssetsInStock() { cod = "ABEV3", name = "AMBEV", lastPrice = 13.18m, currency = "BRL", varDay = 0.098f });
+            assetsInStock.Add(new AssetsInStock() { cod = "CIEL3", name = "Cielo", lastPrice = 5.43m, currency = "BRL", varDay = 7.31f });
+            assetsInStock.Add(new AssetsInStock() { cod = "AZUL4", name = "Azul", lastPrice = 2.95m, currency = "BRL", varDay = 3.92f });
+            assetsInStock.Add(new AssetsInStock() { cod = "GOLL4", name = "Gol", lastPrice = 18.20m, currency = "BRL", varDay = 3.23f });
+            assetsInStock.Add(new AssetsInStock() { cod = "ELET3", name = "Eletrobras", lastPrice = 38.51m, currency = "BRL", varDay = 4.93f });
 
             for (int i = 0; i < assetsInStock.Count; i++)
             {
@@ -132,20 +130,20 @@ namespace broker
             var teste1 = assetsInStock;
             for (i = 0; i < 11; i++)                                                                    // Search selected item in array to find index i
             {
-                if (assetsInStockNew[i].cod == stockSelectedItem) { break; }
+                if (assetsInStock[i].cod == stockSelectedItem) { break; }
             }
 
             for (int j = 0; j < 11; j++)
             {
                 if (i == j && assetsInWallet[j, 0] == null)
                 {
-                    assetsInWallet[i, 0] = assetsInStockNew[i].cod; // cod
-                    assetsInWallet[i, 1] = assetsInStockNew[i].name; // name
-                    assetsInWallet[i, 2] = assetsInStockNew[i].lastPrice; // last
-                    assetsInWallet[i, 3] = assetsInStockNew[i].currency; // currency
-                    assetsInWallet[i, 4] = assetsInStockNew[i].varDay; // var
+                    assetsInWallet[i, 0] = assetsInStock[i].cod; // cod
+                    assetsInWallet[i, 1] = assetsInStock[i].name; // name
+                    assetsInWallet[i, 2] = assetsInStock[i].lastPrice; // last
+                    assetsInWallet[i, 3] = assetsInStock[i].currency; // currency
+                    assetsInWallet[i, 4] = assetsInStock[i].varDay; // var
                     assetsInWallet[i, 5] = (object)quantityBuy; // var
-                    ListViewItem newItem = new ListViewItem(new string[] { assetsInStock[i, 0].ToString(), assetsInWallet[i, 5].ToString(), assetsInStock[i, 4].ToString() + "%", assetsInStock[i, 2].ToString() + assetsInStock[i, 3], assetsInStock[i, 1].ToString() });
+                    ListViewItem newItem = new ListViewItem(new string[] { assetsInWallet[i, 0].ToString(), assetsInWallet[i, 5].ToString(), assetsInWallet[i, 4].ToString() + "%", assetsInWallet[i, 2].ToString() + assetsInWallet[i, 3], assetsInWallet[i, 1].ToString() });
                     listViewAssetsInWallet.Items.Add(newItem);
                     return;
                 }
@@ -153,8 +151,8 @@ namespace broker
                 {
                     listViewAssetsInWallet.Items.Remove(listViewAssetsInWallet.Items.Find(stockSelectedItem, false)[0]);
                     assetsInWallet[i, 5] = (object)(Int32.Parse(assetsInWallet[i, 5].ToString()) + quantityBuy);          // Quantity
-                    ListViewItem newItem = new ListViewItem(new string[] { assetsInStock[i, 0].ToString(), assetsInWallet[i, 5].ToString(), assetsInStock[i, 4].ToString() + "%", assetsInStock[i, 2].ToString() + assetsInStock[i, 3], assetsInStock[i, 1].ToString() });
-                    listViewAssetsInWallet.Items.Add(newItem);
+                    //ListViewItem newItem = new ListViewItem(new string[] { assetsInStock[i, 0].ToString(), assetsInWallet[i, 5].ToString(), assetsInStock[i, 4].ToString() + "%", assetsInStock[i, 2].ToString() + assetsInStock[i, 3], assetsInStock[i, 1].ToString() });
+                    //listViewAssetsInWallet.Items.Add(newItem);
 
                 }
 
