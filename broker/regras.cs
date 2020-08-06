@@ -6,37 +6,37 @@ using System.Threading.Tasks;
 
 namespace broker
 {
-/*    class AssetsInStock
+    class AssetsInStock
     {
         public string cod;
         public string name;
-        public decimal unitPrice;
+        public decimal lastPrice;
         public string currency;
         public float varDay;
-        public AssetsInStock(string cod, string name, decimal unitPrice, string currency, float varDay)
+/*        public AssetsInStock(string cod, string name, decimal unitPrice, string currency, float varDay)
         {
             this.cod = cod;
             this.name = name;
             this.unitPrice = unitPrice;
             this.currency = currency;
             this.varDay = varDay;
-        }
+        }*/
 
-    }*/
+    }
 
-/*    class AssetsInWallet
+    class AssetsInWallet
     {
         public int quantity;
         public float varSinceBuy;
         public DateTime buyDate;
         public decimal assetBalance;
         public float var;
-*//*        public AssetsInWallet(decimal assetBalance)
+/*        public AssetsInWallet(decimal assetBalance)
         {
             this.assetBalance = assetBalance;
 
-        }*//*
-    }*/
+        }*/
+    }
     class Wallet
     {
         public string username;
