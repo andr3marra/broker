@@ -3,24 +3,54 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace broker
 {
-    class AssetsInStock
+    public class AssetsInStock
     {
         public string cod;
         public string name;
         public decimal lastPrice;
         public string currency;
         public float varDay;
-/*        public AssetsInStock(string cod, string name, decimal unitPrice, string currency, float varDay)
+        public AssetsInStock()
         {
-            this.cod = cod;
-            this.name = name;
-            this.unitPrice = unitPrice;
-            this.currency = currency;
-            this.varDay = varDay;
-        }*/
+
+        }
+        public static async Task getAssetData()
+        {
+            HttpClient client = new HttpClient();
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync("https://api.hgbrasil.com/finance/stock_price?key=4331e1b1&symbol=b3sa3");
+                response.EnsureSuccessStatusCode();
+                string responseBody = await response.Content.ReadAsStringAsync();
+                dynamic json = JsonConvert.DeserializeObject(responseBody);
+                var teset = json.results["B3SA3"].name;
+
+                Console.WriteLine(teset);
+                Console.WriteLine("Oi");
+
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+
+        }
+        /*        public AssetsInStock(string cod, string name, decimal unitPrice, string currency, float varDay)
+                {
+                    this.cod = cod;
+                    this.name = name;
+                    this.unitPrice = unitPrice;
+                    this.currency = currency;
+                    this.varDay = varDay;
+                }*/
+
+
 
     }
 
@@ -64,6 +94,7 @@ namespace broker
     }
     class BackEnd
     {
+
 
     }
 }

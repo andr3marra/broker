@@ -8,3 +8,6 @@ C:\Users\andre\source\repos\broker\broker\obj\Debug\broker.csproj.CoreCompileInp
 C:\Users\andre\source\repos\broker\broker\obj\Debug\broker.exe
 C:\Users\andre\source\repos\broker\broker\obj\Debug\broker.pdb
 C:\Users\andre\source\repos\broker\broker\obj\Debug\broker.broker.resources
+C:\Users\andre\source\repos\broker\broker\bin\Debug\Newtonsoft.Json.dll
+C:\Users\andre\source\repos\broker\broker\bin\Debug\Newtonsoft.Json.xml
+C:\Users\andre\source\repos\broker\broker\obj\Debug\broker.csproj.CopyComplete

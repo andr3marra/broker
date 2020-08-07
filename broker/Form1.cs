@@ -50,7 +50,7 @@ namespace broker
                 stockListSelectedItem = listViewAssetsInStock.SelectedItems[0].Text;                            // Get selected item in stock listview
                 listViewAssetsInStock.SelectedItems[0].Focused = true;
                 selectedAssetsInStock = assetsInStock.Find(assetsInStock => assetsInStock.cod == stockListSelectedItem);
-                labelBuyAmount.Text = (selectedAssetsInStock.lastPrice * quantityBuy).ToString();
+                labelBuyAmount.Text = (selectedAssetsInStock.lastPrice * quantityBuy).ToString("0.##");
 
                 
 
@@ -63,7 +63,7 @@ namespace broker
                 listViewAssetsInWallet.SelectedItems[0].Focused = true ;                            // Get selected item in stock listview
                 selectedAssetsInWallet = assetsInWallet.Find(assetsInWallet => assetsInWallet.cod == walletListSelectedItem);
                 if (selectedAssetsInWallet == null) { return; }
-                labelSellAmount.Text = (selectedAssetsInWallet.lastPrice * quantitySell).ToString();
+                labelSellAmount.Text = (selectedAssetsInWallet.lastPrice * quantitySell).ToString("0.##");
             }
             catch { return; }
 
@@ -92,6 +92,8 @@ namespace broker
             //assetsInStock.Add(new AssetsInStock() { cod = "ELET3", name = "Eletrobras", lastPrice = 38.51m, currency = "BRL", varDay = 4.93f });
             assetsInStock.Add(new AssetsInStock() { cod = "GOLL4", name = "Gol", lastPrice = 1000.00m, currency = "BRL", varDay = 3.23f });
             assetsInStock.Add(new AssetsInStock() { cod = "ELET3", name = "Eletrobras", lastPrice = 1.0m, currency = "BRL", varDay = 4.93f });
+            AssetsInStock novavariabel = new AssetsInStock();
+            //novavariabel.
             for (int i = 0; i < assetsInStock.Count; i++)
             {
                 listViewAssetsInStock.Items.Add(new ListViewItem(new string[] { assetsInStock[i].cod, assetsInStock[i].varDay + "%", assetsInStock[i].lastPrice.ToString("0.##"), assetsInStock[i].name }));
@@ -156,14 +158,14 @@ namespace broker
             if (txbBuyQuantity.Text == "" || txbBuyQuantity.Text == "0") { return; }
             try
             {
-            stockListSelectedItem = listViewAssetsInStock.SelectedItems[0].Text;                            // Get selected item in stock listview
-                listViewAssetsInStock.SelectedItems[0].Focused= true;
+                stockListSelectedItem = listViewAssetsInStock.SelectedItems[0].Text;                            // Get selected item in stock listview
+                listViewAssetsInStock.SelectedItems[0].Focused = true;
             }
-            catch{return;}
+            catch { return; }
 
             selectedAssetsInStock = assetsInStock.Find(assetsInStock => assetsInStock.cod == stockListSelectedItem);
-            var selectedAssetsInWallet = assetsInWallet.Find(assetsInWallet => assetsInWallet.cod == stockListSelectedItem);
-            //listViewAssetsInWallet.Items.
+            AssetsInWallet selectedAssetsInWallet = assetsInWallet.Find(assetsInWallet => assetsInWallet.cod == stockListSelectedItem);
+
 
             if (wallet.userBalance >= selectedAssetsInStock.lastPrice * quantityBuy)
             {
