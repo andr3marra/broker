@@ -47,11 +47,11 @@ namespace broker
         }*/
         public decimal userBalance;
         public float varSinceBuy;
-        public Wallet(string username, decimal userBalance)
+/*        public Wallet(string username, decimal userBalance)
         {
             this.username = username;
             this.userBalance = userBalance;
-        }
+        }*/
         bool verifyBalance()
         {
             return true;

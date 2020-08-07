@@ -42,7 +42,7 @@
             this.listViewAssetsInStock = new System.Windows.Forms.ListView();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
+            this.labelAmount = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
             this.btnBuy = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
@@ -150,7 +150,7 @@
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(42)))), ((int)(((byte)(54)))));
             this.panel3.Controls.Add(this.listViewAssetsInStock);
             this.panel3.Controls.Add(this.flowLayoutPanel1);
-            this.panel3.Controls.Add(this.label6);
+            this.panel3.Controls.Add(this.labelAmount);
             this.panel3.Controls.Add(this.panel5);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel3.Location = new System.Drawing.Point(984, 100);
@@ -191,14 +191,15 @@
             this.label7.Text = "Stock";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label6
+            // labelAmount
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(87, 726);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(35, 13);
-            this.label6.TabIndex = 9;
-            this.label6.Text = "label6";
+            this.labelAmount.AutoSize = true;
+            this.labelAmount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(248)))), ((int)(((byte)(242)))));
+            this.labelAmount.Location = new System.Drawing.Point(87, 726);
+            this.labelAmount.Name = "labelAmount";
+            this.labelAmount.Size = new System.Drawing.Size(65, 13);
+            this.labelAmount.TabIndex = 9;
+            this.labelAmount.Text = "labelAmount";
             // 
             // panel5
             // 
@@ -471,7 +472,7 @@
         private System.Windows.Forms.ListView listViewAssetsInStock;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label labelAmount;
         private System.Windows.Forms.TextBox txbBuyQuantity;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;

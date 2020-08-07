@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace broker
 {
@@ -22,25 +23,41 @@ namespace broker
         {
         }
 
-
         private void label1_Click_1(object sender, EventArgs e)
         {
 
         }
+        string stockListSelectedItem;
+        int quantityBuy;
+        AssetsInStock selectedAssetsInStock;
 
         private void timer1_Tick(object sender, EventArgs e)
         {
             labelTime.Text = DateTime.Now.ToString("h:mm:ss tt");
+            labelUserBalance.Text = wallet.userBalance.ToString("0.##");
+            if (txbBuyQuantity.Text != "") { quantityBuy = Int32.Parse(txbBuyQuantity.Text); }
+
+            
+
+            try
+            {
+                stockListSelectedItem = listViewAssetsInStock.SelectedItems[0].Text;                            // Get selected item in stock listview
+                selectedAssetsInStock = assetsInStock.Find(assetsInStock => assetsInStock.cod == stockListSelectedItem);
+                labelAmount.Text = (selectedAssetsInStock.lastPrice * quantityBuy).ToString();
+            }
+            catch { return; }
         }
 
         //Object[,] assetsInWallet = new Object[11, 6];                   // Quantity added, 
         List<AssetsInStock> assetsInStock = new List<AssetsInStock>();
         List<AssetsInWallet> assetsInWallet = new List<AssetsInWallet>();
+        Wallet wallet = new Wallet();
 
         public void broker_Load(object sender, EventArgs e)
         {
-            Wallet wallet = new Wallet("andre.marra", 3072.356m);
-
+            wallet.username = "andre.marra";
+            wallet.userBalance = 3072.356m;
+            
             // Assets in stock
             assetsInStock.Add(new AssetsInStock() { cod = "B3SA3", name = "B3 SA - Brasil Bolsa Balcao", lastPrice = 63.51m, currency = "BRL", varDay = 0.44f });
             assetsInStock.Add(new AssetsInStock() { cod = "BPAC11", name = "Banco BTG Pactual SA Brazilian Units", lastPrice = 88.20m, currency = "BRL", varDay = 1.15f });
@@ -52,20 +69,14 @@ namespace broker
             assetsInStock.Add(new AssetsInStock() { cod = "AZUL4", name = "Azul", lastPrice = 2.95m, currency = "BRL", varDay = 3.92f });
             assetsInStock.Add(new AssetsInStock() { cod = "GOLL4", name = "Gol", lastPrice = 18.20m, currency = "BRL", varDay = 3.23f });
             assetsInStock.Add(new AssetsInStock() { cod = "ELET3", name = "Eletrobras", lastPrice = 38.51m, currency = "BRL", varDay = 4.93f });
-
             for (int i = 0; i < assetsInStock.Count; i++)
             {
                 listViewAssetsInStock.Items.Add(new ListViewItem(new string[] { assetsInStock[i].cod, assetsInStock[i].varDay + "%", assetsInStock[i].lastPrice.ToString("0.##"), assetsInStock[i].name }));
             }
-
-            //listViewAssetsInWallet.Items.Add(new ListViewItem(new string[] { B3SA3.cod, B3SA3.varDay.ToString()+"%", B3SA3.unitPrice.ToString()+B3SA3.currency}));
-            //listViewAssetsInStock.Items.Add(new ListViewItem(new string[] { B3SA3.cod, B3SA3.varDay.ToString() + "%", B3SA3.unitPrice.ToString() + B3SA3.currency }));
             setlistViewAssetsInWallet();
             timer1.Start();
             labelUsername.Text = wallet.username;                                                                   //
-            string userBalance = wallet.userBalance.ToString();                                                     //
-            userBalance = userBalance.Substring(0, userBalance.IndexOf(",")+3);                                     // Transforma Decimal em String com 2 digitos após a virgula
-            labelUserBalance.Text = userBalance;
+            
 
         }
         private void setlistViewAssetsInWallet()
@@ -119,17 +130,24 @@ namespace broker
 
         private void btnBuy_Click(object sender, EventArgs e)
         {
-            string stockListSelectedItem;
-            if (txbBuyQuantity.Text == "") { return; }
-            int quantityBuy = Int32.Parse(txbBuyQuantity.Text);
+            if (txbBuyQuantity.Text == "" || txbBuyQuantity.Text == "0") { return; }
             try
             {
             stockListSelectedItem = listViewAssetsInStock.SelectedItems[0].Text;                            // Get selected item in stock listview
             }
             catch{return;}
 
-            var selectedAssetsInStock = assetsInStock.Find(assetsInStock => assetsInStock.cod == stockListSelectedItem);
+            selectedAssetsInStock = assetsInStock.Find(assetsInStock => assetsInStock.cod == stockListSelectedItem);
             var selectedAssetsInWallet = assetsInWallet.Find(assetsInWallet => assetsInWallet.cod == stockListSelectedItem);
+
+            if(wallet.userBalance >= selectedAssetsInStock.lastPrice * quantityBuy)
+            {
+                wallet.userBalance -= selectedAssetsInStock.lastPrice * quantityBuy;
+            }
+            else
+            {
+                return;
+            }
 
             if (selectedAssetsInWallet == null)
             {
@@ -141,13 +159,11 @@ namespace broker
             }
             else
             {
-                selectedAssetsInWallet.quantity += quantityBuy;
-                var itemApagar = listViewAssetsInWallet.FindItemWithText(stockListSelectedItem);
-                itemApagar.SubItems[1].Text = selectedAssetsInWallet.quantity.ToString();
+                selectedAssetsInWallet.quantity += quantityBuy;                                                     // Update quantity in assetsInWallet
+                var selectedItemInListView = listViewAssetsInWallet.FindItemWithText(stockListSelectedItem);        // Get ListView asset object in Wallet
+                selectedItemInListView.SubItems[1].Text = selectedAssetsInWallet.quantity.ToString();               // Update quantity in listViewWallet
 
             }
-
-
         }
 
         private void listViewAssetsInStock_SelectedIndexChanged(object sender, EventArgs e)
