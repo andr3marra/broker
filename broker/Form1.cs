@@ -153,7 +153,7 @@ namespace broker
             {
                 assetsInWallet.Add(new AssetsInWallet() { cod = selectedAssetsInStock.cod, name = selectedAssetsInStock.name, lastPrice = selectedAssetsInStock.lastPrice, currency = selectedAssetsInStock.currency, varDay = selectedAssetsInStock.varDay, quantity = quantityBuy });
                 int countAssetsInWallet = assetsInWallet.Count;
-                ListViewItem newItem = new ListViewItem(new string[] { assetsInWallet[countAssetsInWallet-1].cod, assetsInWallet[countAssetsInWallet - 1].quantity.ToString(), assetsInWallet[countAssetsInWallet - 1].varDay.ToString() + "%", assetsInWallet[countAssetsInWallet - 1].lastPrice.ToString() + assetsInWallet[countAssetsInWallet - 1].currency, assetsInWallet[countAssetsInWallet - 1].name });
+                ListViewItem newItem = new ListViewItem(new string[] { assetsInWallet[countAssetsInWallet-1].cod, assetsInWallet[countAssetsInWallet - 1].quantity.ToString(), assetsInWallet[countAssetsInWallet - 1].varDay.ToString() + "%", assetsInWallet[countAssetsInWallet - 1].lastPrice.ToString() + assetsInWallet[countAssetsInWallet - 1].currency, (assetsInWallet[countAssetsInWallet - 1].lastPrice* assetsInWallet[countAssetsInWallet - 1].quantity).ToString(), assetsInWallet[countAssetsInWallet - 1].name });
                 listViewAssetsInWallet.Items.Add(newItem);
                 return;
             }
@@ -162,6 +162,7 @@ namespace broker
                 selectedAssetsInWallet.quantity += quantityBuy;                                                     // Update quantity in assetsInWallet
                 var selectedItemInListView = listViewAssetsInWallet.FindItemWithText(stockListSelectedItem);        // Get ListView asset object in Wallet
                 selectedItemInListView.SubItems[1].Text = selectedAssetsInWallet.quantity.ToString();               // Update quantity in listViewWallet
+                selectedItemInListView.SubItems[4].Text = (selectedAssetsInWallet.lastPrice * selectedAssetsInWallet.quantity).ToString();
 
             }
         }
