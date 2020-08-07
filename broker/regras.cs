@@ -24,7 +24,7 @@ namespace broker
 
     }
 
-    class AssetsInWallet
+    class AssetsInWallet : AssetsInStock
     {
         public int quantity;
         public float varSinceBuy;

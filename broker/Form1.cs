@@ -33,13 +33,15 @@ namespace broker
             labelTime.Text = DateTime.Now.ToString("h:mm:ss tt");
         }
 
-        Object[,] assetsInWallet = new Object[11, 6];                   // Quantity added, 
+        //Object[,] assetsInWallet = new Object[11, 6];                   // Quantity added, 
         List<AssetsInStock> assetsInStock = new List<AssetsInStock>();
+        List<AssetsInWallet> assetsInWallet = new List<AssetsInWallet>();
 
         public void broker_Load(object sender, EventArgs e)
         {
             Wallet wallet = new Wallet("andre.marra", 3072.356m);
 
+            // Assets in stock
             assetsInStock.Add(new AssetsInStock() { cod = "B3SA3", name = "B3 SA - Brasil Bolsa Balcao", lastPrice = 63.51m, currency = "BRL", varDay = 0.44f });
             assetsInStock.Add(new AssetsInStock() { cod = "BPAC11", name = "Banco BTG Pactual SA Brazilian Units", lastPrice = 88.20m, currency = "BRL", varDay = 1.15f });
             assetsInStock.Add(new AssetsInStock() { cod = "ITSA4", name = "Itausa Investimentos Itau SA Preference Shares", lastPrice = 10.21m, currency = "BRL", varDay = 0.098f });
@@ -117,46 +119,34 @@ namespace broker
 
         private void btnBuy_Click(object sender, EventArgs e)
         {
-            string stockSelectedItem;
-            int i;
+            string stockListSelectedItem;
             if (txbBuyQuantity.Text == "") { return; }
             int quantityBuy = Int32.Parse(txbBuyQuantity.Text);
             try
             {
-            stockSelectedItem = listViewAssetsInStock.SelectedItems[0].Text;                            // Get selected item in stock listview
+            stockListSelectedItem = listViewAssetsInStock.SelectedItems[0].Text;                            // Get selected item in stock listview
             }
             catch{return;}
 
-            var teste1 = assetsInStock;
-            for (i = 0; i < 11; i++)                                                                    // Search selected item in array to find index i
+            var selectedAssetsInStock = assetsInStock.Find(assetsInStock => assetsInStock.cod == stockListSelectedItem);
+            var selectedAssetsInWallet = assetsInWallet.Find(assetsInWallet => assetsInWallet.cod == stockListSelectedItem);
+
+            if (selectedAssetsInWallet == null)
             {
-                if (assetsInStock[i].cod == stockSelectedItem) { break; }
+                assetsInWallet.Add(new AssetsInWallet() { cod = selectedAssetsInStock.cod, name = selectedAssetsInStock.name, lastPrice = selectedAssetsInStock.lastPrice, currency = selectedAssetsInStock.currency, varDay = selectedAssetsInStock.varDay, quantity = quantityBuy });
+                int countAssetsInWallet = assetsInWallet.Count;
+                ListViewItem newItem = new ListViewItem(new string[] { assetsInWallet[countAssetsInWallet-1].cod, assetsInWallet[countAssetsInWallet - 1].quantity.ToString(), assetsInWallet[countAssetsInWallet - 1].varDay.ToString() + "%", assetsInWallet[countAssetsInWallet - 1].lastPrice.ToString() + assetsInWallet[countAssetsInWallet - 1].currency, assetsInWallet[countAssetsInWallet - 1].name });
+                listViewAssetsInWallet.Items.Add(newItem);
+                return;
+            }
+            else
+            {
+                selectedAssetsInWallet.quantity += quantityBuy;
+                var itemApagar = listViewAssetsInWallet.FindItemWithText(stockListSelectedItem);
+                itemApagar.SubItems[1].Text = selectedAssetsInWallet.quantity.ToString();
+
             }
 
-            for (int j = 0; j < 11; j++)
-            {
-                if (i == j && assetsInWallet[j, 0] == null)
-                {
-                    assetsInWallet[i, 0] = assetsInStock[i].cod; // cod
-                    assetsInWallet[i, 1] = assetsInStock[i].name; // name
-                    assetsInWallet[i, 2] = assetsInStock[i].lastPrice; // last
-                    assetsInWallet[i, 3] = assetsInStock[i].currency; // currency
-                    assetsInWallet[i, 4] = assetsInStock[i].varDay; // var
-                    assetsInWallet[i, 5] = (object)quantityBuy; // var
-                    ListViewItem newItem = new ListViewItem(new string[] { assetsInWallet[i, 0].ToString(), assetsInWallet[i, 5].ToString(), assetsInWallet[i, 4].ToString() + "%", assetsInWallet[i, 2].ToString() + assetsInWallet[i, 3], assetsInWallet[i, 1].ToString() });
-                    listViewAssetsInWallet.Items.Add(newItem);
-                    return;
-                }
-                else if (i == j)
-                {
-                    listViewAssetsInWallet.Items.Remove(listViewAssetsInWallet.Items.Find(stockSelectedItem, false)[0]);
-                    assetsInWallet[i, 5] = (object)(Int32.Parse(assetsInWallet[i, 5].ToString()) + quantityBuy);          // Quantity
-                    //ListViewItem newItem = new ListViewItem(new string[] { assetsInStock[i, 0].ToString(), assetsInWallet[i, 5].ToString(), assetsInStock[i, 4].ToString() + "%", assetsInStock[i, 2].ToString() + assetsInStock[i, 3], assetsInStock[i, 1].ToString() });
-                    //listViewAssetsInWallet.Items.Add(newItem);
-
-                }
-
-            }
 
         }
 
