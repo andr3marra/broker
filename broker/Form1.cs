@@ -28,24 +28,45 @@ namespace broker
 
         }
         string stockListSelectedItem;
+        string walletListSelectedItem;
+
         int quantityBuy;
+        int quantitySell;
+
         AssetsInStock selectedAssetsInStock;
+        AssetsInWallet selectedAssetsInWallet;
 
         private void timer1_Tick(object sender, EventArgs e)
         {
             labelTime.Text = DateTime.Now.ToString("h:mm:ss tt");
             labelUserBalance.Text = wallet.userBalance.ToString("0.##");
             if (txbBuyQuantity.Text != "") { quantityBuy = Int32.Parse(txbBuyQuantity.Text); }
+            if (txbSellQuantity.Text != "") { quantitySell = Int32.Parse(txbSellQuantity.Text); }
 
-            
+
 
             try
             {
                 stockListSelectedItem = listViewAssetsInStock.SelectedItems[0].Text;                            // Get selected item in stock listview
+                listViewAssetsInStock.SelectedItems[0].Focused = true;
                 selectedAssetsInStock = assetsInStock.Find(assetsInStock => assetsInStock.cod == stockListSelectedItem);
-                labelAmount.Text = (selectedAssetsInStock.lastPrice * quantityBuy).ToString();
+                labelBuyAmount.Text = (selectedAssetsInStock.lastPrice * quantityBuy).ToString();
+
+                
+
             }
             catch { return; }
+
+            try
+            {
+                walletListSelectedItem = listViewAssetsInWallet.SelectedItems[0].Text;                            // Get selected item in stock listview
+                listViewAssetsInWallet.SelectedItems[0].Focused = true ;                            // Get selected item in stock listview
+                selectedAssetsInWallet = assetsInWallet.Find(assetsInWallet => assetsInWallet.cod == walletListSelectedItem);
+                if (selectedAssetsInWallet == null) { return; }
+                labelSellAmount.Text = (selectedAssetsInWallet.lastPrice * quantitySell).ToString();
+            }
+            catch { return; }
+
         }
 
         //Object[,] assetsInWallet = new Object[11, 6];                   // Quantity added, 
@@ -56,7 +77,7 @@ namespace broker
         public void broker_Load(object sender, EventArgs e)
         {
             wallet.username = "andre.marra";
-            wallet.userBalance = 3072.356m;
+            wallet.userBalance = 2000.0m;
             
             // Assets in stock
             assetsInStock.Add(new AssetsInStock() { cod = "B3SA3", name = "B3 SA - Brasil Bolsa Balcao", lastPrice = 63.51m, currency = "BRL", varDay = 0.44f });
@@ -67,8 +88,10 @@ namespace broker
             assetsInStock.Add(new AssetsInStock() { cod = "ABEV3", name = "AMBEV", lastPrice = 13.18m, currency = "BRL", varDay = 0.098f });
             assetsInStock.Add(new AssetsInStock() { cod = "CIEL3", name = "Cielo", lastPrice = 5.43m, currency = "BRL", varDay = 7.31f });
             assetsInStock.Add(new AssetsInStock() { cod = "AZUL4", name = "Azul", lastPrice = 2.95m, currency = "BRL", varDay = 3.92f });
-            assetsInStock.Add(new AssetsInStock() { cod = "GOLL4", name = "Gol", lastPrice = 18.20m, currency = "BRL", varDay = 3.23f });
-            assetsInStock.Add(new AssetsInStock() { cod = "ELET3", name = "Eletrobras", lastPrice = 38.51m, currency = "BRL", varDay = 4.93f });
+            //assetsInStock.Add(new AssetsInStock() { cod = "GOLL4", name = "Gol", lastPrice = 18.20m, currency = "BRL", varDay = 3.23f });
+            //assetsInStock.Add(new AssetsInStock() { cod = "ELET3", name = "Eletrobras", lastPrice = 38.51m, currency = "BRL", varDay = 4.93f });
+            assetsInStock.Add(new AssetsInStock() { cod = "GOLL4", name = "Gol", lastPrice = 1000.00m, currency = "BRL", varDay = 3.23f });
+            assetsInStock.Add(new AssetsInStock() { cod = "ELET3", name = "Eletrobras", lastPrice = 1.0m, currency = "BRL", varDay = 4.93f });
             for (int i = 0; i < assetsInStock.Count; i++)
             {
                 listViewAssetsInStock.Items.Add(new ListViewItem(new string[] { assetsInStock[i].cod, assetsInStock[i].varDay + "%", assetsInStock[i].lastPrice.ToString("0.##"), assetsInStock[i].name }));
@@ -134,13 +157,15 @@ namespace broker
             try
             {
             stockListSelectedItem = listViewAssetsInStock.SelectedItems[0].Text;                            // Get selected item in stock listview
+                listViewAssetsInStock.SelectedItems[0].Focused= true;
             }
             catch{return;}
 
             selectedAssetsInStock = assetsInStock.Find(assetsInStock => assetsInStock.cod == stockListSelectedItem);
             var selectedAssetsInWallet = assetsInWallet.Find(assetsInWallet => assetsInWallet.cod == stockListSelectedItem);
+            //listViewAssetsInWallet.Items.
 
-            if(wallet.userBalance >= selectedAssetsInStock.lastPrice * quantityBuy)
+            if (wallet.userBalance >= selectedAssetsInStock.lastPrice * quantityBuy)
             {
                 wallet.userBalance -= selectedAssetsInStock.lastPrice * quantityBuy;
             }
@@ -160,9 +185,9 @@ namespace broker
             else
             {
                 selectedAssetsInWallet.quantity += quantityBuy;                                                     // Update quantity in assetsInWallet
-                var selectedItemInListView = listViewAssetsInWallet.FindItemWithText(stockListSelectedItem);        // Get ListView asset object in Wallet
-                selectedItemInListView.SubItems[1].Text = selectedAssetsInWallet.quantity.ToString();               // Update quantity in listViewWallet
-                selectedItemInListView.SubItems[4].Text = (selectedAssetsInWallet.lastPrice * selectedAssetsInWallet.quantity).ToString();
+                var selectedItemInWalletListView = listViewAssetsInWallet.FindItemWithText(stockListSelectedItem);        // Get ListView asset object in Wallet
+                selectedItemInWalletListView.SubItems[1].Text = selectedAssetsInWallet.quantity.ToString();               // Update quantity in listViewWallet
+                selectedItemInWalletListView.SubItems[4].Text = (selectedAssetsInWallet.lastPrice * selectedAssetsInWallet.quantity).ToString();
 
             }
         }
@@ -170,6 +195,40 @@ namespace broker
         private void listViewAssetsInStock_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnSell_Click(object sender, EventArgs e)
+        {
+            if (txbBuyQuantity.Text == "" || txbBuyQuantity.Text == "0") { return; }
+            try
+            {
+                walletListSelectedItem = listViewAssetsInWallet.SelectedItems[0].Text;                            // Get selected item in stock listview
+                listViewAssetsInWallet.SelectedItems[0].Focused = true;
+            }
+            catch { return; }
+            var selectedAssetsInWallet = assetsInWallet.Find(assetsInWallet => assetsInWallet.cod == walletListSelectedItem);
+            selectedAssetsInStock = assetsInStock.Find(assetsInStock => assetsInStock.cod == walletListSelectedItem);
+            if (selectedAssetsInWallet == null) { return; }
+
+            if (selectedAssetsInWallet.quantity >= quantitySell && selectedAssetsInWallet.quantity > 0)
+            {
+                wallet.userBalance += selectedAssetsInStock.lastPrice * quantitySell;
+                selectedAssetsInWallet.quantity -= quantitySell;                                                     // Update quantity in assetsInWallet
+                var selectedItemInWalletListView = listViewAssetsInWallet.FindItemWithText(walletListSelectedItem);        // Get ListView asset object in Wallet
+                selectedItemInWalletListView.SubItems[1].Text = selectedAssetsInWallet.quantity.ToString();               // Update quantity in listViewWallet
+                selectedItemInWalletListView.SubItems[4].Text = (selectedAssetsInWallet.lastPrice * selectedAssetsInWallet.quantity).ToString();
+                if (selectedAssetsInWallet.quantity == (int)0)
+                {
+                    listViewAssetsInWallet.SelectedItems[0].Remove();
+                    assetsInWallet.Remove(selectedAssetsInWallet);
+                    //assetsInWallet.Clear();
+                }
+                return;
+            }
+            else
+            {
+                return;
+            }
         }
     }
 }

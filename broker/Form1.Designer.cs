@@ -30,9 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(broker));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.panel1 = new System.Windows.Forms.Panel();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.labelUsername = new System.Windows.Forms.Label();
@@ -42,7 +42,7 @@
             this.listViewAssetsInStock = new System.Windows.Forms.ListView();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.label7 = new System.Windows.Forms.Label();
-            this.labelAmount = new System.Windows.Forms.Label();
+            this.labelBuyAmount = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
             this.btnBuy = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
@@ -56,7 +56,7 @@
             this.listViewAssetsInWallet = new System.Windows.Forms.ListView();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.label8 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelSellAmount = new System.Windows.Forms.Label();
             this.panel6 = new System.Windows.Forms.Panel();
             this.btnSell = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -150,7 +150,7 @@
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(42)))), ((int)(((byte)(54)))));
             this.panel3.Controls.Add(this.listViewAssetsInStock);
             this.panel3.Controls.Add(this.flowLayoutPanel1);
-            this.panel3.Controls.Add(this.labelAmount);
+            this.panel3.Controls.Add(this.labelBuyAmount);
             this.panel3.Controls.Add(this.panel5);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel3.Location = new System.Drawing.Point(984, 100);
@@ -191,15 +191,15 @@
             this.label7.Text = "Stock";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // labelAmount
+            // labelBuyAmount
             // 
-            this.labelAmount.AutoSize = true;
-            this.labelAmount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(248)))), ((int)(((byte)(242)))));
-            this.labelAmount.Location = new System.Drawing.Point(87, 726);
-            this.labelAmount.Name = "labelAmount";
-            this.labelAmount.Size = new System.Drawing.Size(28, 13);
-            this.labelAmount.TabIndex = 9;
-            this.labelAmount.Text = "0,00";
+            this.labelBuyAmount.AutoSize = true;
+            this.labelBuyAmount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(248)))), ((int)(((byte)(242)))));
+            this.labelBuyAmount.Location = new System.Drawing.Point(87, 726);
+            this.labelBuyAmount.Name = "labelBuyAmount";
+            this.labelBuyAmount.Size = new System.Drawing.Size(28, 13);
+            this.labelBuyAmount.TabIndex = 9;
+            this.labelBuyAmount.Text = "0,00";
             // 
             // panel5
             // 
@@ -271,16 +271,16 @@
             // 
             this.chart1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(98)))), ((int)(((byte)(114)))), ((int)(((byte)(164)))));
             this.chart1.BorderlineWidth = 0;
-            chartArea2.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.chart1.Legends.Add(legend2);
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chart1.Legends.Add(legend1);
             this.chart1.Location = new System.Drawing.Point(-271, 0);
             this.chart1.Name = "chart1";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.chart1.Series.Add(series2);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chart1.Series.Add(series1);
             this.chart1.Size = new System.Drawing.Size(975, 558);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
@@ -300,7 +300,7 @@
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(42)))), ((int)(((byte)(54)))));
             this.panel2.Controls.Add(this.panel7);
             this.panel2.Controls.Add(this.flowLayoutPanel2);
-            this.panel2.Controls.Add(this.label1);
+            this.panel2.Controls.Add(this.labelSellAmount);
             this.panel2.Controls.Add(this.panel6);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel2.Location = new System.Drawing.Point(1234, 100);
@@ -350,15 +350,16 @@
             this.label8.Text = "Wallet";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label1
+            // labelSellAmount
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(96, 724);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 9;
-            this.label1.Text = "label1";
-            this.label1.Click += new System.EventHandler(this.label1_Click_2);
+            this.labelSellAmount.AutoSize = true;
+            this.labelSellAmount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(248)))), ((int)(((byte)(242)))));
+            this.labelSellAmount.Location = new System.Drawing.Point(96, 724);
+            this.labelSellAmount.Name = "labelSellAmount";
+            this.labelSellAmount.Size = new System.Drawing.Size(28, 13);
+            this.labelSellAmount.TabIndex = 9;
+            this.labelSellAmount.Text = "0,00";
+            this.labelSellAmount.Click += new System.EventHandler(this.label1_Click_2);
             // 
             // panel6
             // 
@@ -385,6 +386,7 @@
             this.btnSell.TabIndex = 8;
             this.btnSell.Text = "Sell";
             this.btnSell.UseVisualStyleBackColor = true;
+            this.btnSell.Click += new System.EventHandler(this.btnSell_Click);
             // 
             // label3
             // 
@@ -472,11 +474,11 @@
         private System.Windows.Forms.ListView listViewAssetsInStock;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label labelAmount;
+        private System.Windows.Forms.Label labelBuyAmount;
         private System.Windows.Forms.TextBox txbBuyQuantity;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelSellAmount;
         private System.Windows.Forms.TextBox txbSellQuantity;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
         private System.Windows.Forms.PictureBox pictureBox2;
